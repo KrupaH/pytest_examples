@@ -7,7 +7,7 @@ from app.api_helpers import make_request, save_to_redis, get_from_redis, Setting
 
 
 class TestMakeRequest:
-    """Tests related to make_request() method"""
+    """Tests related to make_request() method in api_helpers"""
 
     @staticmethod
     def test_make_request():
@@ -51,6 +51,8 @@ class TestMakeRequest:
 
 
 class TestRedisOperations:
+    """Tests related to redis operations done in api_helpers"""
+
     @staticmethod
     def test_save_to_redis(monkeypatch):
         """Method to test saving to redis with a testcontainer"""
@@ -88,4 +90,3 @@ class TestRedisOperations:
             assert get_from_redis("test_key") == b"test_value"
 
             assert get_from_redis("key_does_not_exist") is None
-
