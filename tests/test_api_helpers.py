@@ -1,6 +1,9 @@
+"""Unit tests for app/api_helpers.py"""
+
+import logging
 import pytest
 import requests
-import logging
+
 from testcontainers.redis import RedisContainer
 
 from app.api_helpers import make_request, save_to_redis, get_from_redis, Settings
@@ -10,13 +13,13 @@ class TestMakeRequest:
     """Tests related to make_request() method in api_helpers"""
 
     @staticmethod
-    def test_make_request():
-        # test basic success case
+    def test_make_request_success():
+        """Test basic success case"""
         resp = make_request()
         assert resp["results"]
 
     @staticmethod
-    def test_invalid_json(monkeypatch, caplog):
+    def test_invalid_json_logs_error(monkeypatch, caplog):
         """Test case for if api gives non-json response"""
         # patch to api which does not give json response
         monkeypatch.setattr(Settings, "api_url", "https://randomuser.me/")
@@ -28,7 +31,7 @@ class TestMakeRequest:
         caplog.clear()
 
     @staticmethod
-    def test_api_timeout(monkeypatch, caplog):
+    def test_api_timeout_logs_error(monkeypatch, caplog):
         """Test case for if api times out"""
 
         # mock function to simulate timeout from requests.get
@@ -54,7 +57,7 @@ class TestRedisOperations:
     """Tests related to redis operations done in api_helpers"""
 
     @staticmethod
-    def test_save_to_redis(monkeypatch):
+    def test_save_to_redis_success(monkeypatch):
         """Method to test saving to redis with a testcontainer"""
         with RedisContainer() as redis_container:
             host = redis_container.get_container_host_ip()
@@ -72,7 +75,7 @@ class TestRedisOperations:
             assert client.get("test_key") == b"test_value"
 
     @staticmethod
-    def test_get_from_redis(monkeypatch):
+    def test_get_from_redis_success(monkeypatch):
         """Method to test saving to redis with a testcontainer"""
         with RedisContainer() as redis_container:
             # patch host and port configs to the testcontainer host and port
@@ -90,3 +93,5 @@ class TestRedisOperations:
             assert get_from_redis("test_key") == b"test_value"
 
             assert get_from_redis("key_does_not_exist") is None
+
+    # TODO: Add tests for failure scenarios
