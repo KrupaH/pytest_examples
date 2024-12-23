@@ -1,4 +1,4 @@
-Clone this repo to work on pytest hands-on. Associated blog post:
+Clone this repo to work on pytest hands-on. Associated blog post: https://krupahebbar.substack.com/p/pytest-with-python-from-beginner-to-expert-aeb1152c2981
 
 The project contains a simple FastAPI app and a few helper methods, along with test cases for all of them.
 
